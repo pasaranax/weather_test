@@ -1,0 +1,41 @@
+version: '3'
+services:
+    api:
+        hostname: weather-api
+        restart: unless-stopped
+        build: .
+        command: "python /home/src/main.py"
+        environment:
+            PYTHONPATH: "/home/src:/home"
+            ELASTIC_HOST: "elastic"
+            ELASTIC_PORT: "9200"
+            REDIS_HOST: "redis"
+            REDIS_PORT: "6379"
+        volumes:
+            - .:/home
+        ports:
+            - "8000:8000"
+        depends_on:
+            - redis
+            - elastic
+
+    redis:
+        restart: unless-stopped
+        image: redis:4
+        volumes:
+            - "weather-redis:/data"
+
+    elastic:
+        restart: unless-stopped
+        image: elasticsearch:7.5.2
+        environment:
+            ES_JAVA_OPTS: "-Xms1000m -Xmx1000m"
+            discovery.type: single-node
+        volumes:
+            - "weather-elastic:/usr/share/elasticsearch/data"
+        ports:
+            - "9200:9200"
+
+volumes:
+    weather-redis:
+    weather-elastic:
