@@ -25,55 +25,15 @@ curl localhost:8000/v1/weather/moscow
 ```
 ```json
 {
-  "message": "Moscow",
+  "message": "Temperature",
   "error": null,
   "data": {
-    "coord": {
-      "lon": 37.62,
-      "lat": 55.75
-    },
-    "weather": [
-      {
-        "id": 600,
-        "main": "Snow",
-        "description": "light snow",
-        "icon": "13n"
-      }
-    ],
-    "base": "stations",
-    "main": {
-      "temp": 271.63,
-      "feels_like": 264.28,
-      "temp_min": 270.93,
-      "temp_max": 272.59,
-      "pressure": 994,
-      "humidity": 86
-    },
-    "visibility": 4000,
-    "wind": {
-      "speed": 7,
-      "deg": 200
-    },
-    "clouds": {
-      "all": 90
-    },
-    "dt": 1581373955,
-    "sys": {
-      "type": 1,
-      "id": 9029,
-      "country": "RU",
-      "sunrise": 1581397487,
-      "sunset": 1581430972
-    },
-    "timezone": 10800,
-    "id": 524901,
-    "name": "Moscow",
-    "cod": 200
+    "temperature": -1.2999999999999545
   },
   "meta": {
     "shown": 1
   },
-  "time": 228.762
+  "time": 241.374
 }
 ```
 
@@ -83,16 +43,14 @@ curl localhost:8000/v1/weather/wrong-city
 ```
 ```json
 {
-  "message": "city not found",
-  "error": null,
-  "data": {
-    "cod": "404",
+  "message": null,
+  "error": {
+    "code": "#error",
     "message": "city not found"
   },
-  "meta": {
-    "shown": 1
-  },
-  "time": 224.333
+  "data": null,
+  "meta": null,
+  "time": 267.682
 }
 ```
 Неправильно сформированный запрос:

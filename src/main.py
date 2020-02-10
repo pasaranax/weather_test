@@ -15,14 +15,22 @@ class WeatherHandler(BasicHandler):
     @check(anonymous=True)
     async def get(self, me, city):
         res = requests.get(cfg.app.owm_url.format(city=city, api_key=cfg.app.owm_api_key), timeout=5)
-        data = Data(res.json())
-        status = int(data.data["cod"])
-        message = data.data.get("name") or data.data.get("message") or "error"
-        self.compose(message, result=data, status=status, send=True)
+        data = res.json()
+        if data.get("main"):
+            temperature = data["main"]["temp"] - 273.15  # to celsius
+            self.compose(
+                "Temperature",
+                result=Data({
+                    "temperature": temperature
+                }),
+                send=True
+            )
+        else:
+            self.compose(error=data["message"], status=int(data["cod"]), send=True)
         es.index("log", {
             "date": datetime.now(),
             "query": city,
-            "result": data.data
+            "result": data
         })
 
 
